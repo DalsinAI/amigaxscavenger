@@ -1,0 +1,18 @@
+XScavenger: licences
+====================
+
+The game: Scavenger, Copyright David Ashley (1997 and after), with the SDL
+version by Barry Mead and others (CREDITS.txt), from
+https://sourceforge.net/projects/sdlscavenger (sdlscav-145.4, 5 Jan 2015).
+
+- The program and its pictures, sounds and levels (Data/) are under the
+  GNU General Public License version 2 (COPYING.txt).
+- SDL 2 is GFOpenUp's (LIBS:GFOpenGPU/SDL2.module); the SDL 1.2 layer
+  over it (sdl12-compat, zlib licence) is linked into the program from
+  GFOpenUp's SDL kit.
+- The Amiga port's own files (amiga/, AMIGA_PORT.md, package/, tools/,
+  tests/) are GPL-2.0-or-later, like the game; the GlowIcon art is The
+  AmiCradle Team's own. The source of all of it is at
+  https://github.com/DalsinAI/amigaxscavenger.
+
+The game's data is upstream's own, unchanged.
