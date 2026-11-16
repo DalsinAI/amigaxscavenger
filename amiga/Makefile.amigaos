@@ -1,0 +1,84 @@
+# XScavenger (SDL Scavenger) for GFOS (AmigaOS 3.2 with GFOpenUp),
+# 68040/68060 + FPU, on GFOpenUp's SDL 2 (LIBS:GFOpenGPU/SDL2.module)
+# through the kit's SDL 1.2 layer (sdl12-compat, linked in).
+#
+#   make -f amiga/Makefile.amigaos -j4 XSCAV=/path/to/sdlscav-145 [STOVE=/path/to/os32-gcc16-open6]
+#
+# XSCAV is the upstream release, as package/xscavenger.lock names it, with
+# amiga/patches applied (package/build-amiga.sh fetches and patches it).
+# STOVE is a GFOpenAmigaGCC 16.2.0-open6 stove: its prefix/ has the
+# compiler, the NDK and GFOpenGPU's SDL kit (prefix/m68k-amigaos).
+#
+# Output: build/amigaos/XScavenger/ (the drawer: XScavenger, Data/ with the
+# pictures, sounds and levels, User/, ReadMe, Controls, the licences, with
+# GlowIcons), build/amigaos/XScavenger.info and Install-XScavenger beside
+# them.
+
+XSCAV   ?= ../sdlscav-145
+STOVE   ?= $(HOME)/AmiCradle/stoves/os32-gcc16-open6
+PREFIX  ?= $(STOVE)/prefix
+SDLKIT  ?= $(PREFIX)/m68k-amigaos
+CC      = $(PREFIX)/bin/m68k-amigaos-gcc
+STRIP   = $(PREFIX)/bin/m68k-amigaos-strip
+# hard float: GFOpenGPU's SDL kit is built -m68881
+CPU     ?= -m68040 -m68881
+# -fno-tree-loop-distribute-patterns: GCC 16's loop miscompile (the kit's
+# sdl2-config gives it for GCC 16 too).
+OPT     ?= -O2 -fomit-frame-pointer -fno-tree-loop-distribute-patterns -fno-math-errno
+
+DEFS    = -D__amigaos__
+INC     = -I$(XSCAV) -I$(SDLKIT)/include/SDL
+# 1990s C: implicit int, K&R prototypes, globals defined in two files
+CFLAGS  = -noixemul $(OPT) $(CPU) -std=gnu89 -fcommon -fgnu89-inline -Wno-implicit-function-declaration \
+          -Wno-int-conversion -Wno-incompatible-pointer-types -Wno-pointer-sign $(DEFS) $(INC)
+LDFLAGS = -noixemul $(CPU)
+LIBS    = -L$(SDLKIT)/lib -lSDL -lSDL2 -lm
+
+BUILD   = build/amigaos
+OBJDIR  = $(BUILD)/obj
+OUT     = $(BUILD)/XScavenger
+PROG    = XScavenger
+
+OBJS    = $(addprefix $(OBJDIR)/,scav.o gfx.o sound.o edit.o anim.o) $(OBJDIR)/amiga/amiga_start.o
+DATA    = $(XSCAV)/data/*.lbm $(XSCAV)/data/*.wav $(XSCAV)/data/*.scl $(XSCAV)/data/scav.bmp
+
+all: $(OUT)/$(PROG) package
+
+$(BUILD)/$(PROG).debug: $(OBJS)
+	@mkdir -p $(BUILD)
+	$(CC) $(LDFLAGS) -o $@ $(OBJS) $(LIBS)
+
+$(OUT)/$(PROG): $(BUILD)/$(PROG).debug
+	@mkdir -p $(OUT)
+	$(STRIP) -o $@ $<
+
+package: $(OUT)/$(PROG) AMIGA_PORT.md amiga/Licences.txt amiga/Controls
+	mkdir -p $(OUT)/User $(OUT)/Data
+	cp $(DATA) $(OUT)/Data/
+	cp amiga/Controls $(OUT)/Controls
+	cp AMIGA_PORT.md $(OUT)/ReadMe
+	cp $(XSCAV)/COPYING $(OUT)/COPYING.txt
+	cp $(XSCAV)/README $(OUT)/README-Scavenger.txt
+	cp $(XSCAV)/DOC $(OUT)/DOC-Scavenger.txt
+	cp $(XSCAV)/CREDITS $(OUT)/CREDITS.txt
+	cp amiga/Licences.txt $(OUT)/Licences.txt
+	cp amiga/icons/XScavenger.info amiga/icons/ReadMe.info $(OUT)/
+	for f in COPYING.txt README-Scavenger.txt DOC-Scavenger.txt CREDITS.txt Licences.txt Controls; do \
+	    cp amiga/icons/ReadMe.info $(OUT)/$$f.info; done
+	cp amiga/icons/Data.info $(OUT)/User.info
+	cp amiga/icons/Data.info $(OUT)/Data.info
+	cp amiga/icons/XScavenger-drawer.info $(BUILD)/XScavenger.info
+	cp amiga/Install-XScavenger amiga/Install-XScavenger.info $(BUILD)/
+
+$(OBJDIR)/%.o: $(XSCAV)/%.c $(wildcard $(XSCAV)/*.h)
+	@mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) -c -o $@ $<
+
+$(OBJDIR)/amiga/%.o: amiga/%.c
+	@mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) -c -o $@ $<
+
+clean:
+	rm -rf $(BUILD)
+
+.PHONY: all package clean

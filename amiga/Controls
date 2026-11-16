@@ -1,0 +1,27 @@
+XScavenger: the keys
+====================
+
+The game starts in demo mode, playing on its own.
+
+  F1 or Space     play from the first level not yet solved
+  F4              play from level 1
+  F8              the next demo level
+  F2              the animator (draw your own graphics)
+  F3              the level editor
+  F10             choose your own movement keys
+  F5 (menu)       your player name
+  Alt + X         leave the game
+
+Playing:
+
+  Cursor keys     run, climb ladders, hang from bars
+  Ctrl            dig a hole to the left
+  Alt             dig a hole to the right
+  K or Shift      lose a life (when trapped)
+  Keypad + and -  the next and the last level
+  Pause           pause
+  Esc             back to the demo
+
+The levels you have solved, your keys and name are kept in the drawer's
+User drawer. The drawer's DOC-Scavenger.txt has the editor and animator
+keys.

@@ -1,0 +1,8 @@
+# Upstream SDL Scavenger (David Ashley's Scavenger, SDL version by Barry
+# Mead), fetched by package/build-amiga.sh: the release tarball, checked
+# against its SHA-256.
+XSCAV_URL=https://sourceforge.net/projects/sdlscavenger/files/sdlscav-145.4_2015_01_05.tgz/download
+XSCAV_SHA256=28337a4e43756048a6d53994fcdcba6af4c9a68568d734ea774189713c4d67fe
+XSCAV_DIR=sdlscav-145
+XSCAV_VERSION=145.4
+PORT_VERSION=145.4-gfos1

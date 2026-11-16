@@ -1,0 +1,24 @@
+{
+  "about": "The Workbench icons of the XScavenger drawer: python3 AMICRADLE/scripts/ports/port_icons.py amiga/icons/icons.json --out amiga/icons (DalsinAI/amicradle). The art (art/xscavenger.svg, drawn as an OS 3.5 GlowIcon: a little runner on brick floors beside a ladder, a gold chest and a dug hole) is The AmiCradle Team's own, under the same terms as the other Amiga files; art/xscavenger.png is it rendered at 128 x 128. XScavenger-drawer.info is the drawer's own icon, XScavenger.info beside the drawer; it has its own name here so as not to meet the program's XScavenger.info. ReadMe.info is also copied for Controls, COPYING.txt, README-Scavenger.txt, DOC-Scavenger.txt, CREDITS.txt and Licences.txt; Data.info is the Data and User drawers' icon.",
+  "drawer": {
+    "name": "XScavenger",
+    "file": "XScavenger-drawer.info"
+  },
+  "badge": "art/xscavenger.png",
+  "icons": [
+    {
+      "file": "XScavenger.info",
+      "kind": "tool",
+      "stack": 262144
+    },
+    {
+      "file": "ReadMe.info",
+      "kind": "readme"
+    },
+    {
+      "file": "Data.info",
+      "kind": "drawer",
+      "type": "drawer"
+    }
+  ]
+}
