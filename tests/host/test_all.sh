@@ -24,9 +24,9 @@ if command -v sdl-config >/dev/null 2>&1; then
     # drivers
     cd "$T"
     for c in scav gfx sound edit anim; do
-        cc -O1 -w -fcommon -D__amigaos__ -Dmain=scav_main $(sdl-config --cflags) -c "scav/$c.c" -o "$c.o"
+        cc -std=gnu89 -O1 -w -fcommon -D__amigaos__ -Dmain=scav_main $(sdl-config --cflags) -c "scav/$c.c" -o "$c.o"
     done
-    cc -O1 $(sdl-config --cflags) -c "$HERE/play_driver.c" -o drv.o
+    cc -std=gnu89 -O1 $(sdl-config --cflags) -c "$HERE/play_driver.c" -o drv.o
     cc scav.o gfx.o sound.o edit.o anim.o drv.o -o play $(sdl-config --libs)
     mkdir "PROGDIR:Data"
     cp scav/data/*.lbm scav/data/*.wav scav/data/*.scl scav/data/scav.bmp "PROGDIR:Data/"
